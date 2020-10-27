@@ -38,8 +38,8 @@ public class Game
         greatHall = new Room("inside the Great hall");
         entrance = new Room("outside the main gate");
 
-        greatHall.setExit("entrance", entrance);
-        entrance.setExit("great-hall", greatHall);
+        greatHall.setExit(Room.RoomDirection.SOUTH, entrance);
+        entrance.setExit(Room.RoomDirection.NORTH, greatHall);
 
         currentRoom = entrance;
     }

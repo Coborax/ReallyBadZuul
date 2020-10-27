@@ -17,8 +17,10 @@ import java.util.Map;
  */
 public class Room 
 {
+    enum RoomDirection { NORTH, SOUTH, EAST, WEST }
+
     private String description;
-    HashMap<String, Room> exits = new HashMap<>();
+    HashMap<RoomDirection, Room> exits = new HashMap<>();
 
     /**
      * Create a room described "description". Initially, it has
@@ -36,7 +38,7 @@ public class Room
      * @param direction The direction of the exit.
      * @param room The room at the exit.
      */
-    public void setExit(String direction, Room room)
+    public void setExit(RoomDirection direction, Room room)
     {
         exits.put(direction, room);
     }
@@ -47,7 +49,12 @@ public class Room
      * @return The room located at the exit
      */
     public Room getExit(String direction) {
-        return exits.get(direction);
+        try {
+            RoomDirection directionEnum = RoomDirection.valueOf(direction);
+            return exits.get(directionEnum);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
 
@@ -58,8 +65,8 @@ public class Room
      */
     public String getExitString() {
         String exitString = "Exits: ";
-        for (Map.Entry<String, Room> exit : exits.entrySet()) {
-            exitString += exit.getKey();
+        for (Map.Entry<RoomDirection, Room> exit : exits.entrySet()) {
+            exitString += exit.getKey().toString();
         }
         return exitString;
     }
