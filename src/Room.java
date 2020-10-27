@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -14,11 +17,8 @@
  */
 public class Room 
 {
-    public String description;
-    public Room northExit;
-    public Room southExit;
-    public Room eastExit;
-    public Room westExit;
+    private String description;
+    HashMap<String, Room> exits = new HashMap<>();
 
     /**
      * Create a room described "description". Initially, it has
@@ -32,23 +32,36 @@ public class Room
     }
 
     /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
+     * Define a exit of this room.
+     * @param direction The direction of the exit.
+     * @param room The room at the exit.
      */
-    public void setExits(Room north, Room east, Room south, Room west) 
+    public void setExit(String direction, Room room)
     {
-        if(north != null)
-            northExit = north;
-        if(east != null)
-            eastExit = east;
-        if(south != null)
-            southExit = south;
-        if(west != null)
-            westExit = west;
+        exits.put(direction, room);
+    }
+
+    /***
+     * Get an exit from the given string value
+     * @param direction The value to get the exit
+     * @return The room located at the exit
+     */
+    public Room getExit(String direction) {
+        return exits.get(direction);
+    }
+
+
+    /***
+     * Return a description of the room’s exits,
+     * for example, "Exits: north west".
+     * @return A description of the available exits.
+     */
+    public String getExitString() {
+        String exitString = "Exits: ";
+        for (Map.Entry<String, Room> exit : exits.entrySet()) {
+            exitString += exit.getKey();
+        }
+        return exitString;
     }
 
     /**
@@ -57,6 +70,10 @@ public class Room
     public String getDescription()
     {
         return description;
+    }
+
+    public String getLongDescription() {
+        return "You are " + description + ".\n" + getExitString();
     }
 
 }
